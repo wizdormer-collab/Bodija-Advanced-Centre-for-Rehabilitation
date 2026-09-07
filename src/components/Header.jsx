@@ -24,8 +24,8 @@ export default function Header({ session, onLogout, title }) {
           )}
         </nav>
       )}
-      {session && title && <h1 className="header-title">{title}</h1>}
       <div className="header-right">
+        {session && title && <h1 className="header-title">{title}</h1>}
         {session ? (
           <div className="session">
             <span className={`role-badge role-${session.role}`}>{session.role}</span>

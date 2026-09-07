@@ -94,9 +94,6 @@ body {
 
 .header-title {
   margin: 0;
-  margin-left: 24px;
-  padding-left: 24px;
-  border-left: 1px solid var(--border);
   font-size: 17px;
   font-weight: 700;
   white-space: nowrap;
@@ -104,6 +101,9 @@ body {
 
 .header-right {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 18px;
 }
 
 .session {
@@ -688,7 +688,7 @@ textarea:focus {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-bottom: 12px;
+  margin: 24px 0 12px;
 }
 
 .redflag-list .redchoice {
