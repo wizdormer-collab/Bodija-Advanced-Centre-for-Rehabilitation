@@ -236,6 +236,21 @@ export function scoreTriage(input, rules = DEFAULT_RULES) {
   return scoreV2(input, rules)
 }
 
+export function previewV2(problems, rules = DEFAULT_RULES) {
+  const cfg = rules?.v2 || rules || DEFAULT_RULES.v2
+  const out = scoreV2(
+    { problems, pain: { severity: 'none', worsening: false, recentInjury: false, neurological: false }, acute: false },
+    { ...DEFAULT_RULES, v2: cfg, activeModel: 'v2' },
+  )
+  return {
+    disciplines: out.disciplines,
+    disciplinesLabels: out.disciplinesLabels,
+    complexity: out.complexity,
+    fee: out.fee,
+    feeLabel: out.assessmentFeeLabel,
+  }
+}
+
 export function isV1Rules(rules) {
   return !!(rules && rules.activeModel === 'v1')
 }

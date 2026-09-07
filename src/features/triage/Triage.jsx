@@ -5,6 +5,8 @@ import {
   RISK_FLAG_OPTIONS,
   PAIN_SEVERITY_OPTIONS,
   scoreTriage,
+  previewV2,
+  formatNaira,
   isV1Rules,
 } from '../../lib/scoring.js'
 import { loadRules } from '../../lib/storage.js'
@@ -23,6 +25,18 @@ const emptyForm = {
   clinicianUnstable: false,
 }
 
+function StepTitle({ n, children, note }) {
+  return (
+    <div className="step-title">
+      <span className="step-num">{n}</span>
+      <div>
+        <h2>{children}</h2>
+        {note && <p className="muted step-note">{note}</p>}
+      </div>
+    </div>
+  )
+}
+
 export default function Triage() {
   const navigate = useNavigate()
   const [rules] = useState(() => loadRules())
@@ -30,6 +44,7 @@ export default function Triage() {
   const cfg = v1 ? rules.v1 : rules.v2
   const [form, setForm] = useState(emptyForm)
   const [error, setError] = useState('')
+  const [openGroup, setOpenGroup] = useState('PT')
 
   const set = (patch) => setForm((f) => ({ ...f, ...patch }))
 
@@ -93,19 +108,43 @@ export default function Triage() {
 
   const triggerGroups = Object.entries(cfg?.disciplineTriggers || {})
   const redFlagList = cfg?.redFlags || []
+  const live = previewV2(form.problems, rules)
+  const groupCount = (disc) => cfg?.disciplineTriggers?.[disc]?.filter((t) => form.problems.includes(t.id)).length || 0
 
   return (
     <div className="triage">
       <div className="page-head">
-        <h1>New Patient Triage</h1>
+        <h1>{v1 ? 'New Patient Triage' : 'New Patient Triage'}</h1>
         <p className="muted">
           {v1 ? 'Original count-based model' : 'Discipline + weighted red-flag model'} · Results are calculated instantly.
         </p>
       </div>
 
+      {!v1 && (
+        <div className="triage-summary">
+          <span className="triage-summary-label">Mapped so far</span>
+          <span className="summary-mapped">
+            {live.disciplinesLabels.length ? (
+              live.disciplines.map((d, i) => (
+                <span key={d} className={`summary-chip ${i === 0 ? 'primary-chip' : ''}`}>
+                  {live.disciplinesLabels[i]}
+                </span>
+              ))
+            ) : (
+              <em className="summary-none">Select functional problems</em>
+            )}
+          </span>
+          <span className="summary-meta">
+            {live.disciplinesLabels.length
+              ? `Complexity: ${live.complexity} · Est. fee: ${formatNaira(live.fee)}`
+              : ''}
+          </span>
+        </div>
+      )}
+
       <form onSubmit={submit} className="form panel">
         <section className="section">
-          <h2>Patient identification</h2>
+          <StepTitle n={1}>Patient identification</StepTitle>
           <div className="grid-3">
             <label className="field">
               <span>Patient name *</span>
@@ -129,8 +168,7 @@ export default function Triage() {
         {v1 ? (
           <>
             <section className="section">
-              <h2>A. Functional domains</h2>
-              <p className="muted">Select all that apply.</p>
+              <StepTitle n={2}>Functional domains</StepTitle>
               <div className="chip-grid">
                 {DOMAIN_OPTIONS.map((opt) => (
                   <button
@@ -146,8 +184,7 @@ export default function Triage() {
             </section>
 
             <section className="section">
-              <h2>B. Risk flags</h2>
-              <p className="muted">Select all that apply.</p>
+              <StepTitle n={3}>Risk flags</StepTitle>
               <div className="chip-grid">
                 {RISK_FLAG_OPTIONS.map((opt) => (
                   <button
@@ -163,14 +200,11 @@ export default function Triage() {
             </section>
 
             <section className="section">
-              <h2>C. Red flag</h2>
+              <StepTitle n={4}>Red flag</StepTitle>
               <p className="muted">Is there an unstable condition requiring immediate referral?</p>
               <div className="inline-field">
                 {['no', 'yes'].map((val) => (
-                  <label
-                    key={val}
-                    className={`redchoice ${form.redFlag === val ? 'redchoice-on' : ''}`}
-                  >
+                  <label key={val} className={`redchoice ${form.redFlag === val ? 'redchoice-on' : ''}`}>
                     <input
                       type="radio"
                       name="redFlag"
@@ -187,30 +221,48 @@ export default function Triage() {
         ) : (
           <>
             <section className="section">
-              <h2>A. Functional problems</h2>
-              <p className="muted">Select all that apply. Pathways are derived from these — grouped by potential discipline.</p>
-              {triggerGroups.map(([disc, triggers]) => (
-                <fieldset key={disc} className="problem-group">
-                  <legend className="problem-legend">{cfg.disciplineLabels?.[disc] || disc}</legend>
-                  <div className="chip-grid">
-                    {triggers.map((t) => (
-                      <button
-                        type="button"
-                        key={t.id}
-                        className={`chip ${form.problems.includes(t.id) ? 'chip-on' : ''}`}
-                        onClick={() => toggleList('problems', t.id)}
-                      >
-                        {t.label}
+              <StepTitle n={2} note="Select all that apply. Pathways are derived from these — tap a group to expand it.">
+                Functional problems
+              </StepTitle>
+              <div className="problem-accordion">
+                {triggerGroups.map(([disc, triggers]) => {
+                  const open = openGroup === disc
+                  const count = groupCount(disc)
+                  return (
+                    <div key={disc} className={`problem-group ${open ? 'open' : ''}`}>
+                      <button type="button" className="group-head" onClick={() => setOpenGroup(open ? '' : disc)}>
+                        <span className="group-name">{cfg.disciplineLabels?.[disc] || disc}</span>
+                        {count > 0 && <span className="group-count">{count}</span>}
+                        <span className={`chevron ${open ? 'rotate' : ''}`} aria-hidden="true">
+                          ▾
+                        </span>
                       </button>
-                    ))}
-                  </div>
-                </fieldset>
-              ))}
+                      {open && (
+                        <div className="group-body">
+                          <div className="chip-grid">
+                            {triggers.map((t) => (
+                              <button
+                                type="button"
+                                key={t.id}
+                                className={`chip ${form.problems.includes(t.id) ? 'chip-on' : ''}`}
+                                onClick={() => toggleList('problems', t.id)}
+                              >
+                                {t.label}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
             </section>
 
             <section className="section">
-              <h2>B. Pain</h2>
-              <p className="muted">Pain can contribute to red-flag scoring when severe or rapidly worsening.</p>
+              <StepTitle n={3} note="Pain can contribute to red-flag scoring when severe or rapidly worsening.">
+                Pain &amp; red-flag screen
+              </StepTitle>
               <div className="grid-2">
                 <label className="field">
                   <span>Pain severity</span>
@@ -248,11 +300,6 @@ export default function Triage() {
                   Neurological symptoms present
                 </label>
               </div>
-            </section>
-
-            <section className="section">
-              <h2>C. Red-flag screen</h2>
-              <p className="muted">Select all that apply.</p>
               <div className="redflag-list">
                 {redFlagList.map((f) => (
                   <label key={f.id} className={`redchoice ${form.redFlagAnswers.includes(f.id) ? 'redchoice-on' : ''}`}>
@@ -261,8 +308,11 @@ export default function Triage() {
                       checked={form.redFlagAnswers.includes(f.id)}
                       onChange={() => toggleList('redFlagAnswers', f.id)}
                     />
-                    <span className="redflag-title">{f.label}</span>
-                    <span className="muted">{f.question}</span>
+                    <div>
+                      <span className="redflag-title">{f.label}</span>
+                      <span className="muted redflag-q">{f.question}</span>
+                      <span className="redflag-score">+{f.score}</span>
+                    </div>
                   </label>
                 ))}
               </div>
@@ -277,8 +327,9 @@ export default function Triage() {
             </section>
 
             <section className="section">
-              <h2>D. Acuteness</h2>
-              <p className="muted">Is the presentation current / acute (developed recently, in days)?</p>
+              <StepTitle n={4} note="Is the presentation current / acute (developed recently, in days)?">
+                Acuteness
+              </StepTitle>
               <div className="inline-field">
                 {['no', 'yes'].map((val) => (
                   <label key={val} className={`redchoice ${form.acute === val ? 'redchoice-on' : ''}`}>
@@ -303,7 +354,7 @@ export default function Triage() {
           <button type="button" className="btn btn-ghost" onClick={() => setForm(emptyForm)}>
             Reset
           </button>
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary btn-lg">
             Calculate result
           </button>
         </div>

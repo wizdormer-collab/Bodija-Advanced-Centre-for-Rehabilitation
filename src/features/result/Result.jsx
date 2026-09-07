@@ -44,6 +44,8 @@ function V1Result({ patient, result }) {
 
 function V2Result({ patient, result }) {
   const emergency = result.redFlagDecision === 'emergency'
+  const pillClass =
+    result.redFlagDecision === 'emergency' ? 'pill-red' : result.redFlagDecision === 'urgent_review' ? 'pill-orange' : 'pill-green'
   return (
     <div className="result-screen">
       {emergency && (
@@ -53,60 +55,67 @@ function V2Result({ patient, result }) {
         </div>
       )}
 
-      <div className="result-head v2-head">
-        <div className="result-block">
-          <span className="result-label">Primary rehabilitation need</span>
-          <span className="result-value result-pathway">{result.primaryDisciplineLabel || '—'}</span>
+      <div className="v2-layout">
+        <div className="hero-grid">
+          <div className="hero-primary">
+            <span className="result-label">Primary rehabilitation need</span>
+            <span className="hero-value">{result.primaryDisciplineLabel || '—'}</span>
+          </div>
+          <div className="result-block">
+            <span className="result-label">Complexity</span>
+            <span className={`result-value ${levelClass(result.complexity)}`}>{result.complexity}</span>
+          </div>
+          <div className="result-block">
+            <span className="result-label">Risk level</span>
+            <span className={`result-value ${levelClass(result.riskLevel)}`}>{result.riskLevel}</span>
+          </div>
         </div>
-        <div className="result-block">
-          <span className="result-label">Additional rehabilitation needs</span>
-          <span className="result-value result-value-sm">
-            {result.additionalDisciplinesLabels.length ? result.additionalDisciplinesLabels.join(' + ') : 'None'}
-          </span>
-        </div>
-        <div className="result-block">
-          <span className="result-label">Complexity</span>
-          <span className={`result-value ${levelClass(result.complexity)}`}>{result.complexity}</span>
-        </div>
-        <div className="result-block">
-          <span className="result-label">Risk level</span>
-          <span className={`result-value ${levelClass(result.riskLevel)}`}>{result.riskLevel}</span>
-        </div>
-        <div className="result-block">
-          <span className="result-label">Red-flag status</span>
-          <span className={`result-value ${emergency ? 'lvl-high' : ''}`}>{result.redFlagStatus}</span>
-        </div>
-        <div className="result-block">
-          <span className="result-label">Recommended pathway</span>
-          <span className="result-value result-pathway">{result.pathwayLabel}</span>
-        </div>
-      </div>
 
-      <div className="fee-bar">
-        <div>
-          <span className="result-label">Proposed initial assessment fee</span>
-          <span className="fee-amount">{emergency ? result.assessmentFeeLabel : formatNaira(result.fee)}</span>
+        <div className="sub-grid">
+          <div className="result-block">
+            <span className="result-label">Recommended pathway</span>
+            <span className="result-value result-pathway">{result.pathwayLabel}</span>
+          </div>
+          <div className="result-block">
+            <span className="result-label">Additional rehabilitation needs</span>
+            <span className="result-value result-value-sm">
+              {result.additionalDisciplinesLabels.length ? result.additionalDisciplinesLabels.join(' + ') : 'None'}
+            </span>
+          </div>
         </div>
-        <div>
-          <span className="result-label">Assessment package</span>
-          <span className="fee-package">{emergency ? 'Routine assessment not applied at triage' : result.feePackage}</span>
+
+        <div className={`redflag-pill ${pillClass}`}>{result.redFlagStatus}</div>
+
+        <div className="fee-bar">
+          <div>
+            <span className="result-label">Proposed initial assessment fee</span>
+            <span className="fee-amount">{emergency ? result.assessmentFeeLabel : formatNaira(result.fee)}</span>
+          </div>
+          <div>
+            <span className="result-label">Assessment package</span>
+            <span className="fee-package">{emergency ? 'Routine assessment not applied at triage' : result.feePackage}</span>
+          </div>
+          <div>
+            <span className="result-label">Disciplines involved</span>
+            <span className="fee-package">{result.disciplinesLabels.length ? result.disciplinesLabels.join(' + ') : '—'}</span>
+          </div>
         </div>
-      </div>
 
-      <div className="next-step">
-        <h3>Suggested next step</h3>
-        <p>{result.nextStep}</p>
-      </div>
+        <div className="next-step">
+          <h3>Suggested next step</h3>
+          <p>{result.nextStep}</p>
+        </div>
 
-      <details className="details">
-        <summary>How this was calculated</summary>
-        <ul className="calc-list">
-          <li>Disciplines mapped: {result.disciplinesLabels.length ? result.disciplinesLabels.join(' + ') : 'none'} ({result.disciplinesCount})</li>
-          <li>Red-flag score: {result.redFlagScore} (incl. pain component {result.painScore}) → {result.redFlagDecision}</li>
-          <li>Risk level: {result.riskLevel} · Assessment fee: {result.assessmentFeeLabel}</li>
-          <li>Rule applied: {result.pathwayId}</li>
-        </ul>
-      </details>
+        <details className="details">
+          <summary>How this was calculated</summary>
+          <ul className="calc-list">
+            <li>Disciplines mapped: {result.disciplinesLabels.length ? result.disciplinesLabels.join(' + ') : 'none'} ({result.disciplinesCount})</li>
+            <li>Red-flag score: {result.redFlagScore} (incl. pain component {result.painScore}) → {result.redFlagDecision}</li>
+            <li>Risk level: {result.riskLevel} · Assessment fee: {result.assessmentFeeLabel}</li>
+            <li>Rule applied: {result.pathwayId}</li>
+          </ul>
+        </details>
+      </div>
     </div>
   )
 }
