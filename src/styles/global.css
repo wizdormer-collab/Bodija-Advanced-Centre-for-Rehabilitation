@@ -114,6 +114,11 @@ body {
   color: var(--success);
 }
 
+.role-coordinator {
+  background: #fdf3e7;
+  color: var(--warn);
+}
+
 .session-name {
   font-weight: 600;
 }
@@ -456,10 +461,144 @@ textarea:focus {
   vertical-align: top;
 }
 
+/* v2 triage form */
+.problem-group {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin: 0 0 12px;
+}
+
+.problem-legend {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--primary-dark);
+  padding: 0 6px;
+}
+
+.inline-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.redflag-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.redflag-list .redchoice {
+  align-items: flex-start;
+}
+
+.redflag-title {
+  font-weight: 600;
+}
+
+/* v2 result */
+.result-value-sm {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.v2-head {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.fee-bar {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  background: #eef6ff;
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+
+.fee-bar > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fee-amount {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+
+.fee-package {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.emergency-banner {
+  background: #fdf1f0;
+  border: 1px solid var(--danger);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  color: var(--danger);
+}
+
+.emergency-banner h2 {
+  margin: 0 0 4px;
+  font-size: 18px;
+}
+
+.emergency-banner p {
+  margin: 0;
+}
+
+/* override */
+.override-panel h2 {
+  margin: 0 0 6px;
+}
+
+.override-record p {
+  margin: 6px 0;
+}
+
+/* admin */
+.model-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-right: 8px;
+}
+
+.fee-tier,
+.band-edit,
+.redflag-edit {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.redflag-edit {
+  margin-bottom: 10px;
+}
+
+.redflag-edit-title {
+  margin-bottom: 8px;
+}
+
+.band-edit > .result-label {
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+
 @media (max-width: 720px) {
   .grid-3,
   .grid-2,
-  .result-head {
+  .result-head,
+  .v2-head {
     grid-template-columns: 1fr;
   }
   .header {

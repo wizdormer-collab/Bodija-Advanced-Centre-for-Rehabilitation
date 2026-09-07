@@ -30,6 +30,7 @@ export default function Login({ onLogin }) {
           <span>Role</span>
           <select value={role} onChange={(e) => setRole(e.target.value)}>
             <option value="staff">Staff (intake / front desk / clinical)</option>
+            <option value="coordinator">Clinical Case Coordinator (triage override)</option>
             <option value="admin">Administrator (rule editing)</option>
           </select>
         </label>

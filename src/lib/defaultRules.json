@@ -1,51 +1,256 @@
 {
   "version": 1,
-  "complexityThresholds": { "moderate": 2, "complex": 3 },
-  "riskThresholds": { "low": 0, "high": 3 },
-  "pathwayRules": [
-    {
-      "id": "refer_out",
-      "label": "REFER OUT",
-      "order": 1,
-      "or": [
-        [ { "field": "red_flag", "op": "=", "value": true } ]
-      ]
-    },
-    {
-      "id": "single_domain",
-      "label": "SINGLE DOMAIN PATHWAY",
-      "order": 2,
-      "or": [
-        [
+  "activeModel": "v2",
+  "v1": {
+    "complexityThresholds": { "moderate": 2, "complex": 3 },
+    "riskThresholds": { "low": 0, "high": 3 },
+    "pathwayRules": [
+      {
+        "id": "refer_out",
+        "label": "REFER OUT",
+        "order": 1,
+        "or": [[{ "field": "red_flag", "op": "=", "value": true }]]
+      },
+      {
+        "id": "single_domain",
+        "label": "SINGLE DOMAIN PATHWAY",
+        "order": 2,
+        "or": [[
           { "field": "domains_count", "op": "=", "value": 1 },
           { "field": "risk_score", "op": "=", "value": 0 }
+        ]]
+      },
+      {
+        "id": "dual",
+        "label": "MODERATE / DUAL PATHWAY",
+        "order": 3,
+        "or": [
+          [{ "field": "domains_count", "op": "=", "value": 2 }],
+          [{ "field": "risk_score", "op": "between", "min": 1, "max": 2 }]
         ]
-      ]
-    },
-    {
-      "id": "dual",
-      "label": "MODERATE / DUAL PATHWAY",
-      "order": 3,
-      "or": [
-        [ { "field": "domains_count", "op": "=", "value": 2 } ],
-        [ { "field": "risk_score", "op": "between", "min": 1, "max": 2 } ]
-      ]
-    },
-    {
-      "id": "mdt",
-      "label": "MDT + RISK SCREENING",
-      "order": 4,
-      "or": [
-        [ { "field": "domains_count", "op": ">=", "value": 3 } ],
-        [ { "field": "risk_score", "op": ">=", "value": 3 } ]
-      ]
+      },
+      {
+        "id": "mdt",
+        "label": "MDT + RISK SCREENING",
+        "order": 4,
+        "or": [
+          [{ "field": "domains_count", "op": ">=", "value": 3 }],
+          [{ "field": "risk_score", "op": ">=", "value": 3 }]
+        ]
+      }
+    ],
+    "nextStepText": {
+      "refer_out": "Route to immediate clinical/medical review - do not delay.",
+      "single_domain": "Route to specialist assessment for the selected domain.",
+      "dual": "Route to dual / multi-domain assessment (Physio and/or OT).",
+      "mdt": "List for MDT + risk screening before assigning a pathway."
     }
-  ],
-  "nextStepText": {
-    "refer_out": "Route to immediate clinical/medical review - do not delay.",
-    "single_domain": "Route to specialist assessment for the selected domain.",
-    "dual": "Route to dual / multi-domain assessment (Physio and/or OT).",
-    "mdt": "List for MDT + risk screening before assigning a pathway."
+  },
+  "v2": {
+    "disciplineOrder": ["PT", "OT", "SLT", "AUD", "BT", "PSY"],
+    "disciplineLabels": {
+      "PT": "Physiotherapy",
+      "OT": "Occupational Therapy",
+      "SLT": "Speech & Language Therapy",
+      "AUD": "Audiology / Hearing",
+      "BT": "Behavioural Therapy",
+      "PSY": "Psychotherapy"
+    },
+    "disciplineTriggers": {
+      "PT": [
+        { "id": "walking", "label": "Difficulty walking" },
+        { "id": "standing", "label": "Difficulty standing" },
+        { "id": "transfers", "label": "Difficulty with transfers" },
+        { "id": "balance", "label": "Balance problems" },
+        { "id": "falls", "label": "Falls or fear of falling" },
+        { "id": "strength", "label": "Reduced strength" },
+        { "id": "movement", "label": "Reduced movement" },
+        { "id": "mobility", "label": "Reduced mobility" },
+        { "id": "endurance", "label": "Poor physical endurance" },
+        { "id": "lower_limb", "label": "Lower-limb weakness" },
+        { "id": "movement_pain", "label": "Pain with movement" }
+      ],
+      "OT": [
+        { "id": "dressing", "label": "Difficulty dressing" },
+        { "id": "bathing", "label": "Difficulty bathing / grooming" },
+        { "id": "toileting", "label": "Difficulty with toileting" },
+        { "id": "feeding", "label": "Difficulty with feeding / eating (functional)" },
+        { "id": "hand_function", "label": "Reduced hand function" },
+        { "id": "upper_limb", "label": "Reduced upper-limb function" },
+        { "id": "writing", "label": "Difficulty writing" },
+        { "id": "devices", "label": "Difficulty using devices / equipment" },
+        { "id": "household", "label": "Difficulty with household activities" },
+        { "id": "work", "label": "Difficulty with work-related activities" },
+        { "id": "routines", "label": "Difficulty managing routines" },
+        { "id": "independent_living", "label": "Difficulty with independent living" },
+        { "id": "participation", "label": "Reduced participation in everyday activities" }
+      ],
+      "SLT": [
+        { "id": "speech", "label": "Speech difficulty" },
+        { "id": "unclear_speech", "label": "Unclear speech" },
+        { "id": "articulation", "label": "Articulation difficulty" },
+        { "id": "word_finding", "label": "Word-finding difficulty" },
+        { "id": "language", "label": "Language difficulty" },
+        { "id": "expressing", "label": "Difficulty expressing thoughts" },
+        { "id": "communication", "label": "Communication difficulty" },
+        { "id": "loss_comm", "label": "Loss of previously acquired communication" },
+        { "id": "swallowing", "label": "Swallowing difficulty" }
+      ],
+      "AUD": [
+        { "id": "hearing_speech", "label": "Difficulty hearing speech" },
+        { "id": "suspected_loss", "label": "Suspected hearing loss" },
+        { "id": "unilateral", "label": "Unilateral hearing difficulty" },
+        { "id": "recurrent", "label": "Recurrent hearing problems" },
+        { "id": "tinnitus", "label": "Tinnitus with hearing concerns" },
+        { "id": "hearing_comm", "label": "Hearing-related communication difficulty" },
+        { "id": "hearing_aid", "label": "Existing hearing aid / technology needs assessment" }
+      ],
+      "BT": [
+        { "id": "behaviour", "label": "Significant behavioural difficulties" },
+        { "id": "regulate", "label": "Difficulty regulating behaviour" },
+        { "id": "interfering", "label": "Behavioural problems affecting daily functioning" },
+        { "id": "rehab_participation", "label": "Behavioural difficulties affecting rehabilitation" },
+        { "id": "behaviour_other", "label": "Other behavioural assessment / intervention need" }
+      ],
+      "PSY": [
+        { "id": "emotional_adjustment", "label": "Emotional adjustment concerns" },
+        { "id": "distress", "label": "Psychological distress" },
+        { "id": "coping", "label": "Difficulty coping with illness / disability" },
+        { "id": "anxiety", "label": "Anxiety affecting rehabilitation participation" },
+        { "id": "emotional_function", "label": "Emotional difficulties affecting function" },
+        { "id": "adjustment_life", "label": "Adjustment following major life / health changes" }
+      ]
+    },
+    "redFlags": [
+      {
+        "id": "A",
+        "label": "RED FLAG A — Acute neurological change",
+        "question": "Has the person suddenly developed weakness, difficulty walking, loss of movement, difficulty speaking, or difficulty understanding?",
+        "score": 3,
+        "emergency": true
+      },
+      {
+        "id": "B",
+        "label": "RED FLAG B — Altered consciousness / seizure",
+        "question": "Has the person recently fainted, lost consciousness, had a seizure, become unusually confused, or become difficult to wake?",
+        "score": 3,
+        "emergency": true
+      },
+      {
+        "id": "C",
+        "label": "RED FLAG C — Serious cardiopulmonary symptoms",
+        "question": "Is the person experiencing severe difficulty breathing, chest pain, or another serious acute medical problem?",
+        "score": 3,
+        "emergency": true
+      },
+      {
+        "id": "D",
+        "label": "RED FLAG D — Serious injury / acute deterioration",
+        "question": "Is there severe or rapidly worsening pain, serious injury, uncontrolled bleeding, or another condition that appears medically urgent?",
+        "score": 3,
+        "emergency": true
+      },
+      {
+        "id": "E",
+        "label": "RED FLAG E — Recent major medical event",
+        "question": "Has the person recently had a stroke, major neurological event, major surgery, or hospital admission/discharge?",
+        "score": 1,
+        "emergency": false
+      },
+      {
+        "id": "F",
+        "label": "RED FLAG F — Immediate safeguarding concern",
+        "question": "Is there an immediate concern about the person's safety, including possible abuse, neglect, self-harm, or harm from another person?",
+        "score": 3,
+        "emergency": true
+      },
+      {
+        "id": "G",
+        "label": "RED FLAG G — Severe unexplained deterioration",
+        "question": "Has there been a sudden or significant worsening of the person's condition recently?",
+        "score": 2,
+        "emergency": false
+      }
+    ],
+    "painHRules": {
+      "severeTierScore": 2,
+      "worseningScore": 2,
+      "severePlusInjuryScore": 3,
+      "severePlusNeurologicScore": 3
+    },
+    "decisionBands": {
+      "emergency": {
+        "label": "Emergency referral",
+        "statusText": "🔴 Urgent medical / emergency referral required",
+        "riskLevel": "High",
+        "minScore": 3,
+        "requireAcute": true
+      },
+      "urgent_review": {
+        "label": "Urgent clinical review",
+        "statusText": "🟠 Urgent clinical review required",
+        "riskLevel": "Moderate",
+        "minScore": 2,
+        "requireAcute": false
+      },
+      "green": {
+        "label": "No immediate red flag",
+        "statusText": "🟢 No immediate red flag identified",
+        "riskLevel": "Low",
+        "minScore": 0,
+        "requireAcute": false
+      }
+    },
+    "complexityLevels": {
+      "single": { "count": 1, "label": "Single-discipline" },
+      "dual": { "count": 2, "label": "Two-discipline" },
+      "mdt": { "count": 3, "label": "Multidisciplinary" }
+    },
+    "feeTiers": [
+      { "count": 1, "fee": 25000, "package": "One-discipline assessment" },
+      { "count": 2, "fee": 50000, "package": "Two-discipline assessment" },
+      { "count": 3, "fee": 75000, "package": "Multidisciplinary assessment" }
+    ],
+    "pathwayRules": [
+      {
+        "id": "urgent_referral",
+        "label": "URGENT MEDICAL REFERRAL",
+        "order": 1,
+        "or": [[{ "field": "red_flag_decision", "op": "=", "value": "emergency" }]]
+      },
+      {
+        "id": "clinical_review",
+        "label": "CLINICAL REVIEW REQUIRED",
+        "order": 2,
+        "or": [[{ "field": "red_flag_decision", "op": "=", "value": "urgent_review" }]]
+      },
+      {
+        "id": "single",
+        "label": "SINGLE-DISCIPLINE ASSESSMENT",
+        "order": 3,
+        "or": [[{ "field": "disciplines_count", "op": "=", "value": 1 }]]
+      },
+      {
+        "id": "dual",
+        "label": "TWO-DISCIPLINE ASSESSMENT",
+        "order": 4,
+        "or": [[{ "field": "disciplines_count", "op": "=", "value": 2 }]]
+      },
+      {
+        "id": "mdt",
+        "label": "MULTIDISCIPLINARY ASSESSMENT",
+        "order": 5,
+        "or": [[{ "field": "disciplines_count", "op": ">=", "value": 3 }]]
+      }
+    ],
+    "outcomeText": {
+      "urgent_referral": "Route for URGENT medical / emergency assessment. Routine BACR rehabilitation assessment should not proceed until the patient has received appropriate medical assessment / clearance. Assessment fee: not applicable at this stage.",
+      "clinical_review": "URGENT CLINICAL REVIEW REQUIRED — medical / rehabilitation physician, ENT, neurology or other appropriate specialist review, or medical clearance before rehabilitation proceeds.",
+      "single": "Route to specialist assessment for the identified discipline.",
+      "dual": "Route to a two-discipline assessment covering the recommended disciplines.",
+      "mdt": "List for multidisciplinary assessment (three or more disciplines identified).",
+      "manual_review": "No discipline could be mapped from the problems selected — manual clinical review recommended."
+    }
   },
   "updatedAt": null,
   "updatedBy": null
