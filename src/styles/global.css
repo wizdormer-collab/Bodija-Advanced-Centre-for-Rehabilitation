@@ -168,6 +168,7 @@ body {
 .page-head-row h1 {
   margin: 0;
   font-size: 24px;
+  white-space: nowrap;
 }
 
 .rules-link {
