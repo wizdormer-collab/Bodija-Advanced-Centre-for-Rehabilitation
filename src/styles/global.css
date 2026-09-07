@@ -345,10 +345,22 @@ textarea:focus {
   border-radius: 10px;
 }
 
-.btn-wide {
-  padding: 9px 22px;
+.logout-btn {
+  font: inherit;
   font-size: 14px;
-  min-width: 0;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: var(--muted);
+  padding: 9px 18px;
+  border-radius: 8px;
+}
+
+.logout-btn:hover {
+  color: var(--primary-dark);
+  background: #e8f1f8;
 }
 
 .btn-primary {

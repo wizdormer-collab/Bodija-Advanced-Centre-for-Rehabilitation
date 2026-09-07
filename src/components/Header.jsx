@@ -30,7 +30,7 @@ export default function Header({ session, onLogout }) {
             <span className={`role-badge role-${session.role}`}>{session.role}</span>
             <span className="session-name">{session.name || session.role}</span>
             <button
-              className="btn btn-ghost btn-wide"
+              className="logout-btn"
               onClick={() => {
                 onLogout()
                 navigate('/login')
