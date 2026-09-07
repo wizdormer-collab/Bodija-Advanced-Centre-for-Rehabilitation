@@ -18,11 +18,6 @@ export default function Header({ session, onLogout }) {
             <NavLink to="/" end className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
               New Triage
             </NavLink>
-            {session.role === 'admin' && (
-              <NavLink to="/admin" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
-                Routing Rules
-              </NavLink>
-            )}
           </nav>
         )}
         {session ? (

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import {
   DOMAIN_OPTIONS,
   RISK_FLAG_OPTIONS,
@@ -9,7 +9,7 @@ import {
   formatNaira,
   isV1Rules,
 } from '../../lib/scoring.js'
-import { loadRules } from '../../lib/storage.js'
+import { loadRules, loadSession } from '../../lib/storage.js'
 
 const emptyForm = {
   patientName: '',
@@ -40,6 +40,7 @@ function StepTitle({ n, children, note }) {
 export default function Triage() {
   const navigate = useNavigate()
   const [rules] = useState(() => loadRules())
+  const [session] = useState(() => loadSession())
   const v1 = isV1Rules(rules)
   const cfg = v1 ? rules.v1 : rules.v2
   const [form, setForm] = useState(emptyForm)
@@ -114,12 +115,19 @@ export default function Triage() {
   return (
     <div className="triage">
       <div className="page-head">
-        <h1>New Patient Triage</h1>
         <p className="muted">
           {v1 ? 'Original count-based model' : 'Discipline + weighted red-flag model'}
           <br />
           Results are calculated instantly.
         </p>
+        <div className="page-head-row">
+          {session?.role === 'admin' && (
+            <Link to="/admin" className="btn btn-ghost page-rule-btn">
+              Routing Rules
+            </Link>
+          )}
+          <h1>New Patient Triage</h1>
+        </div>
       </div>
 
       {!v1 && (

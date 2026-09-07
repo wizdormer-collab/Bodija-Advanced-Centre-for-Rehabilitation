@@ -158,6 +158,21 @@ body {
   margin: 0 0 10px;
 }
 
+.page-head-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.page-head-row h1 {
+  margin: 0;
+}
+
+.page-rule-btn {
+  white-space: nowrap;
+}
+
 .page-head h1 {
   margin: 0 0 4px;
   font-size: 26px;
