@@ -116,7 +116,9 @@ export default function Triage() {
       <div className="page-head">
         <h1>New Patient Triage</h1>
         <p className="muted">
-          {v1 ? 'Original count-based model' : 'Discipline + weighted red-flag model'} · Results are calculated instantly.
+          {v1 ? 'Original count-based model' : 'Discipline + weighted red-flag model'}
+          <br />
+          Results are calculated instantly.
         </p>
       </div>
 
