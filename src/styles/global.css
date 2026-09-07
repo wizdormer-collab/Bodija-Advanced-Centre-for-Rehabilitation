@@ -160,14 +160,14 @@ body {
 
 .page-head-row {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 12px;
   margin-top: 8px;
 }
 
 .page-head-row h1 {
   margin: 0;
-  font-size: 20px;
+  font-size: 24px;
 }
 
 .rules-link {
