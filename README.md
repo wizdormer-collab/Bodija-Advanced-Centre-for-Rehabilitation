@@ -4,6 +4,8 @@ Frontend web app for **Bodija Advanced Centre for Rehabilitation**: staff comple
 
 Built with **React + Vite** (frontend only). Based on the project PRD + TRD for the BACR Triage System MVP.
 
+**Live app:** https://wizdormer-collab.github.io/Bodija-Advanced-Centre-for-Rehabilitation/
+
 ## Features
 
 - **Triage intake form** — patient name / DOB / file reference, functional domains, risk flags, and a red-flag Yes/No question
