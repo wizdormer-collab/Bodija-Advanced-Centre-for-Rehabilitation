@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "complexityThresholds": { "moderate": 2, "complex": 3 },
+  "riskThresholds": { "low": 0, "high": 3 },
+  "pathwayRules": [
+    {
+      "id": "refer_out",
+      "label": "REFER OUT",
+      "order": 1,
+      "or": [
+        [ { "field": "red_flag", "op": "=", "value": true } ]
+      ]
+    },
+    {
+      "id": "single_domain",
+      "label": "SINGLE DOMAIN PATHWAY",
+      "order": 2,
+      "or": [
+        [
+          { "field": "domains_count", "op": "=", "value": 1 },
+          { "field": "risk_score", "op": "=", "value": 0 }
+        ]
+      ]
+    },
+    {
+      "id": "dual",
+      "label": "MODERATE / DUAL PATHWAY",
+      "order": 3,
+      "or": [
+        [ { "field": "domains_count", "op": "=", "value": 2 } ],
+        [ { "field": "risk_score", "op": "between", "min": 1, "max": 2 } ]
+      ]
+    },
+    {
+      "id": "mdt",
+      "label": "MDT + RISK SCREENING",
+      "order": 4,
+      "or": [
+        [ { "field": "domains_count", "op": ">=", "value": 3 } ],
+        [ { "field": "risk_score", "op": ">=", "value": 3 } ]
+      ]
+    }
+  ],
+  "nextStepText": {
+    "refer_out": "Route to immediate clinical/medical review - do not delay.",
+    "single_domain": "Route to specialist assessment for the selected domain.",
+    "dual": "Route to dual / multi-domain assessment (Physio and/or OT).",
+    "mdt": "List for MDT + risk screening before assigning a pathway."
+  },
+  "updatedAt": null,
+  "updatedBy": null
+}
