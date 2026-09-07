@@ -82,9 +82,10 @@ body {
 .nav-link {
   text-decoration: none;
   color: var(--muted);
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-weight: 500;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .nav-link.active {
@@ -333,6 +334,10 @@ textarea:focus {
   padding: 13px 26px;
   font-size: 16px;
   border-radius: 10px;
+}
+
+.btn-wide {
+  padding: 10px 30px;
 }
 
 .btn-primary {
