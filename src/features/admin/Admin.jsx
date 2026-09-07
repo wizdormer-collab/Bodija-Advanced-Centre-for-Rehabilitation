@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, NavLink } from 'react-router-dom'
 import { scoreTriage } from '../../lib/scoring.js'
 import {
   loadRules,
@@ -183,6 +183,14 @@ export default function Admin() {
   return (
     <div className="admin">
       <div className="page-head">
+        <nav className="nav page-tabs">
+          <NavLink to="/" end className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
+            New Triage
+          </NavLink>
+          <NavLink to="/admin" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
+            Routing Rules
+          </NavLink>
+        </nav>
         <h1>Routing rules</h1>
         <p className="muted">Changes take effect for new submissions immediately — no redeploy needed.</p>
       </div>

@@ -154,6 +154,10 @@ body {
   margin-bottom: 16px;
 }
 
+.page-tabs {
+  margin: 0 0 10px;
+}
+
 .page-head h1 {
   margin: 0 0 4px;
   font-size: 26px;
