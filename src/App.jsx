@@ -17,7 +17,15 @@ function RequireAuth({ children }) {
   return children
 }
 
+const TITLES = {
+  '/': 'New Patient Triage',
+  '/result': 'Triage Result',
+  '/admin': 'Routing Rules',
+}
+
 export default function App() {
+  const location = useLocation()
+  const title = TITLES[location.pathname] || 'BACR Triage'
   const [session, setSession] = useState(() => loadSession())
 
   const login = (s) => {
@@ -32,7 +40,7 @@ export default function App() {
 
   return (
     <div className="app">
-      <Header session={session} onLogout={logout} />
+      <Header session={session} onLogout={logout} title={title} />
       <main className="content">
         <Routes>
           <Route path="/login" element={<Login onLogin={login} />} />

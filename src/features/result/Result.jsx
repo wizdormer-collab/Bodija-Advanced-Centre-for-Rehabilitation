@@ -276,7 +276,6 @@ export default function Result() {
   return (
     <div className="result">
       <div className="page-head">
-        <h1>{result.model === 'v1' ? 'Result' : 'BACR Triage Result'}</h1>
         <PatientSummary patient={patient} />
       </div>
 

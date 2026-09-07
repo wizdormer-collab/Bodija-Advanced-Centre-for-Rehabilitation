@@ -183,7 +183,6 @@ export default function Admin() {
   return (
     <div className="admin">
       <div className="page-head">
-        <h1>Routing rules</h1>
         <p className="muted">Changes take effect for new submissions immediately — no redeploy needed.</p>
       </div>
 

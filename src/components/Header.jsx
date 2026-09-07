@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 
-export default function Header({ session, onLogout }) {
+export default function Header({ session, onLogout, title }) {
   const navigate = useNavigate()
   return (
     <header className="header">
@@ -24,6 +24,7 @@ export default function Header({ session, onLogout }) {
           )}
         </nav>
       )}
+      {session && title && <h1 className="header-title">{title}</h1>}
       <div className="header-right">
         {session ? (
           <div className="session">
