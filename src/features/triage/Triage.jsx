@@ -121,12 +121,12 @@ export default function Triage() {
           Results are calculated instantly.
         </p>
         <div className="page-head-row">
+          <h1>New Patient Triage</h1>
           {session?.role === 'admin' && (
-            <Link to="/admin" className="btn btn-ghost page-rule-btn">
+            <Link to="/admin" className="rules-link">
               Routing Rules
             </Link>
           )}
-          <h1>New Patient Triage</h1>
         </div>
       </div>
 

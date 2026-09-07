@@ -169,8 +169,23 @@ body {
   margin: 0;
 }
 
-.page-rule-btn {
+.rules-link {
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
   white-space: nowrap;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: var(--muted);
+  padding: 9px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.rules-link:hover {
+  color: var(--primary-dark);
+  background: #e8f1f8;
 }
 
 .page-head h1 {
