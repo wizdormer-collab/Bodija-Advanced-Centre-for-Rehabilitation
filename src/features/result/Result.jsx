@@ -276,6 +276,7 @@ export default function Result() {
   return (
     <div className="result">
       <div className="page-head">
+        <h1>BACR Triage Result</h1>
         <PatientSummary patient={patient} />
       </div>
 

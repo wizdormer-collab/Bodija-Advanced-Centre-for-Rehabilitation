@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 
-export default function Header({ session, onLogout, title }) {
+export default function Header({ session, onLogout }) {
   const navigate = useNavigate()
   return (
     <header className="header">
@@ -12,20 +12,19 @@ export default function Header({ session, onLogout, title }) {
           <small>Bodija Advanced Centre for Rehabilitation</small>
         </div>
       </div>
-      {session && (
-        <nav className="nav">
-          <NavLink to="/" end className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
-            New Triage
-          </NavLink>
-          {session.role === 'admin' && (
-            <NavLink to="/admin" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
-              Rules
-            </NavLink>
-          )}
-        </nav>
-      )}
       <div className="header-right">
-        {session && title && <h1 className="header-title">{title}</h1>}
+        {session && (
+          <nav className="nav">
+            <NavLink to="/" end className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
+              New Triage
+            </NavLink>
+            {session.role === 'admin' && (
+              <NavLink to="/admin" className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}>
+                Rules
+              </NavLink>
+            )}
+          </nav>
+        )}
         {session ? (
           <div className="session">
             <span className={`role-badge role-${session.role}`}>{session.role}</span>
