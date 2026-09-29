@@ -1,12 +1,13 @@
 import React from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
+import logo from '../assets/bacr-logo.png'
 
 export default function Header({ session, onLogout }) {
   const navigate = useNavigate()
   return (
     <header className="header">
       <div className="brand">
-        <span className="brand-mark">BACR</span>
+        <img className="brand-mark" src={logo} alt="BACR" />
         <div className="brand-text">
           <strong>Patient Triage System</strong>
           <small>Bodija Advanced Centre for Rehabilitation</small>

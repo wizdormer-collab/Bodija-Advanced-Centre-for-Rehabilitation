@@ -55,12 +55,10 @@ body {
 }
 
 .brand-mark {
-  background: var(--primary);
-  color: #fff;
-  font-weight: 700;
-  border-radius: 6px;
-  padding: 6px 8px;
-  letter-spacing: 0.5px;
+  display: block;
+  height: 44px;
+  width: auto;
+  border-radius: 8px;
 }
 
 .brand-text {
